@@ -4,7 +4,6 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 
 
-
 def cargar(request):
     if request.method =='POST':
         subir_archivo = request.FILES['archivo']
