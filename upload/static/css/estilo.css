@@ -1,0 +1,18 @@
+.asteriskField{
+  display: none;
+}
+
+body{
+  margin: 0%;
+}
+
+#piePagina{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  
+}
+
+#signup{
+  padding-top: 1%;
+}

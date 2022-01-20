@@ -1,7 +1,11 @@
 from django.contrib import admin
 
-from .models import Usuarios
+from .models import Archivo
 
 # Register your models here.
+class ArchivosAdmin(admin.ModelAdmin):
+    list_display = ('tarjeta', 'archivo', 'fecha')
+    search_fields = ('archivo', 'nombre')
+    list_filter = ('fecha',)
 
-admin.site.register(Usuarios)
+admin.site.register(Archivo, ArchivosAdmin)
