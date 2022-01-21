@@ -1,18 +1,26 @@
+
 .asteriskField{
   display: none;
 }
 
 body{
-  margin: 0%;
+  margin: 0;
+  width: 100%;
 }
 
-#piePagina{
-  position: absolute;
-  bottom: 0;
+#rowhome{
+  margin: 0;
   width: 100%;
-  
 }
+
+#rowcargar{
+  margin: 0;
+  width: 100%;
+}
+
 
 #signup{
-  padding-top: 1%;
+  margin: 0;
+  width: 100%;
+  padding-top: 2%;
 }

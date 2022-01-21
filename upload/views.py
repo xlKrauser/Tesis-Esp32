@@ -31,8 +31,7 @@ def cargar(request):
     if request.method == 'POST':
         form = ArchivoForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            
+            form.save()  
     else:
         form = ArchivoForm()
     return render(request, 'cargar.html', {'form' : form})
