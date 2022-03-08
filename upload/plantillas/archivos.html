@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+    <div id = "archivos" class="row justify-content-center mt-4 mb-4">
+        <div id="colArchivos" class="col-9">
+            <h1 align="center" class="mb-3 mt-3">Mis Archivos</h1>
+            <div class="table-responsive">
+              <table class="table mb-4">
+                <thead>
+                  <tr>
+                    <th scope="col">Tarjeta</th>
+                    <th scope="col">Nombre del archivo</th>
+                    <th scope="col">Fecha publicacion</th>
+                    <th scope="col">Borrar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  {% for archivo in archivos %}
+                  <tr>
+                      <td>{{ archivo.tarjeta }}</td>
+                      <td><a href="{{archivo.archivo.url}}">{{ archivo.archivo }}</a></td>
+                      <td>{{ archivo.fecha }}</td>
+                      <td>
+                          <form  method="POST" action="{% url 'borrarArchivos' archivo.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Borrar</button>
+                          </form>
+                      </td>
+                  </tr>
+                  {% endfor %}
+                  
+                </tbody>
+              </table>
+            </div>
+            
+        </div>
+    </div>
+
+{% endblock %}
+

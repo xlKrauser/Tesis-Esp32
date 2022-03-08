@@ -7,13 +7,23 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!--Dropzone js & CSS-->
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+    <!-- CSS y Javascript-->
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}" type="text/css">
+    <script src="{% static 'vendor/barra_progreso.js' %}" defer></script>
 
     <title>{% block title %}Programacion ESP-32{% endblock %}</title>
 
   </head>
   <body>
-
+    {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand ms-5" href="{% url 'home' %}">Navbar</a>
@@ -23,16 +33,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link {% if request.path == '/'%} active {% endif%}" aria-current="page" href="{% url 'home' %}">Inicio</a>
+              <a class="nav-link {% if request.path == '/'%} active {% endif %}" aria-current="page" href="{% url 'home' %}">
+                Inicio
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if request.path == '/cargar/'%} active {% endif%}" href="{% url 'cargar' %}">Cargar Archivo</a>
+              {% if user.is_authenticated %}
+              <a class="nav-link {% if request.path == '/cargar/'%} active {% endif%}" href="{% url 'cargar' %}">
+                Cargar Archivo
+              </a>
+              {% endif %}
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Cursos
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">ESP-32</a></li>
                 <li><a class="dropdown-item" href="#">Arduino</a></li>
                 <!--<li><hr class="dropdown-divider"></li>-->
@@ -40,20 +56,42 @@
               </ul>
             </li>
             <li class="nav-item">
+              <a class="nav-link {% if request.path == '/contacto/'%} active {% endif %}" aria-current="page" href="{% url 'contacto' %}">
+                Contacto
+              </a>
+            </li>
+            <!--li class="nav-item">
               <a class="nav-link disabled">Disabled</a>
+            </li-->
+          </ul>
+          {% if user.is_authenticated %}
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{user.username}}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-sm-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'archivos' %}">Mis archivos</a></li>
+                <li><a class="dropdown-item" href="{% url 'password_change' %}">Cambiar contreseña</a></li>
+                <li><hr class="dropdown-divider"><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesion</a></li>
+              </ul>
             </li>
           </ul>
+          {% else %}
           <form class="d-flex me-5">
-            <a href="{% url 'login' %}" class="btn btn-outline-secondary">Login</a>
-            <a href="{% url 'signup' %}" class="btn btn-success ms-2">Sign Up</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-secondary">Iniciar sesión</a>
+            <a href="{% url 'signup' %}" class="btn btn-success ms-2">Registrarse</a>
           </form>
+          {% endif %}
         </div>
       </div>
     </nav> 
+    {% endblock %}
 
     {% block content %}
     {% endblock %}
 
+    {% block footer %}
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3">
       <div class="col-md-4 d-flex align-items-center ms-5">
         <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
@@ -63,6 +101,9 @@
       </div>
   
       <ul class="nav col-md-4 me-5 justify-content-end list-unstyled d-flex">
+        <li class="me-3 m-1">
+          <span class="text-muted">Redes Sociales</span>
+        </li>
         <li class="ms-3">
           <a class="text-muted" href="https://www.twitter.com/" target="blank">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
@@ -86,6 +127,7 @@
         </li>
       </ul>
     </footer>
+    {% endblock %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 

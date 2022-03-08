@@ -1,21 +1,30 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+{% load static %}
+
+
 {% block content %}
     <div  id = "rowcargar" class="row justify-content-center">
-        <div class="col-5">
+        <div class="col-4">
             <div class="card" style="border-radius: 15px;">
-                <div class="card-body">
-                    <h2>Cargar</h2>
-                    <form method="post" enctype="multipart/form-data">
+                <div class="card-body">       
+                    <h2 align="center">Subir Archivos</h2>
+                    <div id="alert-box" class="mb-3"></div>
+                    <div class="text-center mb-3">
+                        <img src="{% static 'img/Upload.png'%}" id="img-upload">
+                    </div>
+                    <form id = "upload-form" action="." class="mb-3" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form|crispy }}
-                        <button type="submit" class=" btn btn-primary">Subir archivo</button>
+                        {{ form.tarjeta | as_crispy_field }}
+                        {{ form.archivo | as_crispy_field }}                        
+                        <div class="progress visually-hidden mb-3" id="progress-box" style="height: 20px;"></div>
+                        <button type="submit" class="btn btn-primary">Subir archivo</button>            
+                        <button type="reset" class="btn btn-danger visually-hidden ms-2" id="cancel-btn">Cancelar</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
-
 

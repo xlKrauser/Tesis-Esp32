@@ -1,11 +1,81 @@
 {% extends 'base.html' %} 
 
-{% block content %} 
+{% load crispy_forms_tags %}
 
-<div align ="center">
-    <h1>Iniciar sesión</h1>
-</div>
+{% block nav %}
+{% endblock %}
 
+{% load static %}
 
+{% block content %}
+    <div id = "login" class="container-fluid">
+        <!--Formulario para incio de sesion-->
+        <div class="row justify-content-center mb-3">
+            <div class="col-4">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <h1 align = 'center' class="mb-3">Inicia Sesion</h1>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% if form.errors %}
+                            <div class="alert alert-block alert-danger"> 
+                                <ul class="m-0"> 
+                                    <li>Error: Por favor ingrese un nombre de usuario y contraseña correctos.</li> 
+                                </ul> 
+                            </div>
+                            {% endif %}
+                            <div id="div_id_username" class="mb-3"> 
+                                <label for="id_username" class="form-label requiredField">
+                                    Usuario
+                                    <span class="asteriskField">*</span> 
+                                </label> 
+                                <div class="input-group ">
+                                    <span class="input-group-text bg-transparent">
+                                        <img class="userIcon" src="{% static 'img/UserIcon.png' %}" alt="">
+                                    </span>
+                                    <input type="text" name="username" placeholder="diego.martinez" autofocus autocapitalize="none" autocomplete="username" maxlength="150" class="textinput textInput form-control" required="" id="id_username"> 
+                                </div>
+                            </div>
+                            <div id="div_id_password" class="mb-3"> 
+                                <label for="id_password" class="form-label requiredField">
+                                    Contraseña
+                                    <span class="asteriskField">*</span> 
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-transparent">
+                                        <img class="keyIcon" src="{% static 'img/KeyIcon.png' %}" alt="">
+                                    </span>
+                                    <input type="password" name="password" placeholder="*********" autocomplete="current-password" class="textinput textInput form-control" required="" id="id_password"> 
+                                </div>
+                                
+                            </div>
+                            <div id="div_reset" class="mb-3">
+                                <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+                            </div>
+                            <a href="{% url 'home' %}">
+                                <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+                            </a>
+                        </form>             
+                    </div>
+                </div>            
+            </div>
+        </div>
+        <!--Se pregunta si ya se tiene una cuenta-->
+        <div class="row justify-content-center mb-3">
+            <div class="col-4">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <p align="center" >¿Eres nuevo?
+                            <a href="{% url 'signup' %}">Crea una</a>
+                            cuenta    
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
+{% block footer %}
 {% endblock %}

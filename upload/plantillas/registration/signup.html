@@ -2,10 +2,14 @@
 
 {% load crispy_forms_tags %}
 
+{% block nav %}
+{% endblock %}
+
 {% block content %} 
-    <div id = "signup" class="row justify-content-center">
+<div  id = "signup" class="container-fluid">
+    <div class="row justify-content-center mb-3">
         <div class="col-4">
-            <div id = "cardsignup" class="card" style="border-radius: 15px;">
+            <div class="card" style="border-radius: 15px;">
                 <div class="card-body">
                     <h1 align = 'center'>Registrate</h1>
                     <form method="post">
@@ -20,5 +24,22 @@
             </div>            
         </div>
     </div>
-        
+    
+    <div class="row justify-content-center mb-3">
+        <div class="col-4">
+            <div id = "cardsignup" class="card" style="border-radius: 15px;">
+                <div class="card-body">
+                    <p align = "center">¿Ya tienes una cuenta?
+                        <a href="{% url 'login' %}">Inicia sesion aquí</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

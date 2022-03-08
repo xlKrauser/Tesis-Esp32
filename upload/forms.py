@@ -1,37 +1,29 @@
-from cProfile import label
+
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from django.forms import ValidationError
 
-from .models import Archivo
-
+from upload.models import Archivo
 
 class ArchivoForm(forms.ModelForm):
+
     class Meta:
         model = Archivo        
         fields = ('tarjeta', 'archivo')
+    
+    def save(self, user):
+        obj = super().save(commit=False)
+        obj.usuario = user
+        obj.save()
+        return obj
+
 
 class SignUpForm(forms.Form):
     username = forms.CharField(label='Usuario' ,min_length=6, max_length=20)
     email = forms.EmailField(label='Correo Electronico', required=True, max_length=40)
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput())
-    password2 = forms.CharField(label='Confirme su contraseña', widget=forms.PasswordInput())
-
-    """def __init__(self, *args, **kwargs):
-        super(SignUpForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Row(
-                Column('username', css_class='form-group col-md-3 mb-0 input'),
-                Column('email', css_class='form-group col-md-3 mb-0 input'),
-                Column('password1', css_class='form-group col-md-3 mb-0 input'),
-                Column('password2', css_class='form-group col-md-3 mb-0 input'),
-                css_class='form-row'
-            )
-        )"""
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput(), min_length=6)
+    password2 = forms.CharField(label='Confirme su contraseña', widget=forms.PasswordInput(), min_length=6)
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
@@ -59,12 +51,26 @@ class SignUpForm(forms.Form):
         user = User.objects.create_user(
             self.cleaned_data['username'],
             self.cleaned_data['email'],
-            self.cleaned_data['password1']
+            self.cleaned_data['password1'],
         )
         return user
-        
-        
 
+class MyPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(label = "Contraseña anterior", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+    new_password1 = forms.CharField(label = "Contraseña nueva", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+    new_password2 = forms.CharField(label = "Confirmar contraseña", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+
+    class Meta:
+        Model = User
+        fields = ('old_password', 'new_password1', 'new_password2')
+
+class MySetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(label = "Contraseña nueva", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password', 'placeholder': 'Contraseña nueva'}))
+    new_password2 = forms.CharField(label = "Confirmar contraseña", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password', 'placeholder': 'Confirmar contraseña'}))
+
+    class Meta:
+        Model = User
+        fields = ('new_password1', 'new_password2')
     
 
 
