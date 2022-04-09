@@ -41,8 +41,9 @@ urlpatterns = [
     path('archivos/', views.archivos, name = 'archivos'),
     path('archivos/<int:pk>', views.borrarArchivos, name = 'borrarArchivos'),
     path('contacto/', views.contacto, name = 'contacto'),
-    path('secretpage/', views.secretpage, name = 'secretpage')
+    path('secretpage/', views.secretpage, name = 'secretpage'),
+    path('inicio/', views.inicio, name='inicio'),
+    path('editar_perfil/', views.profileUpload, name="editar_perfil"),
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

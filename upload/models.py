@@ -1,12 +1,22 @@
-
 from django.db import models
 from django.contrib.auth.models import User
-from django.forms import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.utils import timezone
-
+import os
+from django.conf import settings
+from PIL import Image
+from django.db.models.signals import post_save
 
 # Create your models here.
+
+def user_directory_path_profile(instance, filename):
+    profile_picture_name = 'user/{0}/profile.jpg'.format(instance.user.username)
+    full_path = os.path.join(settings.MEDIA_ROOT, profile_picture_name)
+
+    if os.path.exists(full_path):
+        os.remove(full_path)
+    
+    return profile_picture_name
 
 OPCIONES_TARJETA = (
     ('T1', 'MODULO DOMOTICO'),
@@ -20,6 +30,25 @@ OPCIONES_TARJETA = (
     ('T9', 'ESP32 - 9'),
     ('T10', 'ESP32 -10'),
     )
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    avatar = models.ImageField(upload_to = user_directory_path_profile, null=True, blank=True)
+    bio = models.TextField(null=True, blank=True, max_length=300)
+    
+    def __str__(self):
+        return self.user.username
+
+def created_user_profile(sender, instance, created, **kwargs):
+    if  created:
+        Profile.objects.create(user=instance)
+
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+post_save.connect(created_user_profile, sender=User)
+post_save.connect(save_user_profile, sender=User)
+
 
 class Archivo(models.Model):
 

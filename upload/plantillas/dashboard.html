@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- CSS y Javascript-->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" type="text/css">
+    <script src="{% static 'vendor/barra_progreso.js' %}" defer></script>
+
+    <title>{% block title %} Dashboard {% endblock %}</title>
+</head>
+<body>
+
+    <div class="contenedor">
+        <div class="navigation">
+            <ul>
+                <li class="brandname">
+                    <a href="{% url 'inicio' %}">
+                        <span class="icon"><img src="{% static 'img/Logo.png' %}"></span>
+                        <span class="main-title">Club de Tecnologia<br>Unillanos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'inicio' %}">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="title">Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'cargar' %}">
+                        <span class="icon"><ion-icon name="cloud-upload-outline"></ion-icon></span>
+                        <span class="title">Subir Archivo</span>                  
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'archivos' %}">
+                        <span class="icon"><ion-icon name="folder-outline"></ion-icon></span>
+                        <span class="title">Mis archivos subidos</span>
+                    </a>
+                </li>
+                <li>    
+                    <a id = "configuracion">
+                        <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
+                        <span class="title">Configuracion</span>
+                        <i class="arrow-down"></i>
+                    </a>
+                </li>
+                <div class="dropmenu">
+                    <li>
+                        <a href="{% url 'editar_perfil' %}">
+                            <span class="icon"><ion-icon name="create-outline"></ion-icon></span>
+                            <span class="title">Editar perfil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'password_change' %}">
+                            <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                            <span class="title">Cambiar contraseña</span>
+                        </a>
+                    </li>
+                </div>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span class="title">Cerrar sesion</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <!-- search -->
+            <div class="search">
+                <label>
+                    <input type="text" placeholder="Search">
+                    <ion-icon name="search-outline"></ion-icon>
+                </label>
+            </div>
+            <!-- userImg -->
+            <div class="user">
+                {% if request.user.profile.avatar %}
+                <img src="{{request.user.profile.avatar.url}}">
+                {% else %}
+                <img src="{% static 'img/User.png' %}" alt="">
+                {% endif %}
+            </div>
+        </div>
+        {% block content %}
+        {% endblock %}
+        
+        <footer class="footer">
+                <div class="textFooter">
+                <a href="https://unillanos.edu.co/" target="_blank" >Universidad de los llanos</a>&nbsp;<p>© Todos los derechos reservados</p>
+                </div>
+            </div>
+        </footer>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script>
+
+        //Menu Toggle
+        let toggle = document.querySelector('.toggle');
+        let navigation = document.querySelector('.navigation');
+        let main = document.querySelector('.main');
+
+        toggle.onclick = function(){
+            navigation.classList.toggle('active')
+            main.classList.toggle('active')
+        }
+
+        //Agregar clase hovered en la lista de items
+        let list = document.querySelectorAll('.navigation li');
+        function activeLink(){
+            list.forEach((item) =>
+            item.classList.remove('hovered'));
+            this.classList.add('hovered');
+        }
+        list.forEach((item) =>
+        item.addEventListener('mouseover', activeLink));
+
+        let config = document.querySelector('#configuracion');
+        let dropmenu = document.querySelector('.dropmenu')
+        let arrow = document.querySelector('.arrow-down')
+        config.onclick = function(){
+            dropmenu.classList.toggle('show');
+            arrow.classList.toggle('rotate');
+        }
+
+    </script>
+</body>
+</html>

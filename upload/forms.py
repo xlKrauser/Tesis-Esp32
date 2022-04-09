@@ -1,10 +1,14 @@
 
+from cProfile import label
+from dataclasses import fields
+from pyexpat import model
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 
-from upload.models import Archivo
+
+from upload.models import Archivo, Profile
 
 class ArchivoForm(forms.ModelForm):
 
@@ -17,7 +21,6 @@ class ArchivoForm(forms.ModelForm):
         obj.usuario = user
         obj.save()
         return obj
-
 
 class SignUpForm(forms.Form):
     username = forms.CharField(label='Usuario' ,min_length=6, max_length=20)
@@ -56,12 +59,12 @@ class SignUpForm(forms.Form):
         return user
 
 class MyPasswordChangeForm(PasswordChangeForm):
-    old_password = forms.CharField(label = "Contraseña anterior", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
-    new_password1 = forms.CharField(label = "Contraseña nueva", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
-    new_password2 = forms.CharField(label = "Confirmar contraseña", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password'}))
+    old_password = forms.CharField(label = "Contraseña anterior", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password', 'placeholder':'Contraseña anterior'}))
+    new_password1 = forms.CharField(label = "Contraseña nueva", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password', 'placeholder':'Constraseña nueva'}))
+    new_password2 = forms.CharField(label = "Confirmar contraseña", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password', 'placeholder':'Confirme su contraseña'}))
 
     class Meta:
-        Model = User
+        model = User
         fields = ('old_password', 'new_password1', 'new_password2')
 
 class MySetPasswordForm(SetPasswordForm):
@@ -69,10 +72,25 @@ class MySetPasswordForm(SetPasswordForm):
     new_password2 = forms.CharField(label = "Confirmar contraseña", widget=forms.PasswordInput(attrs={'class':'form-control', 'type':'password', 'placeholder': 'Confirmar contraseña'}))
 
     class Meta:
-        Model = User
+        model = User
         fields = ('new_password1', 'new_password2')
-    
 
+class ProfileUpdate(forms.ModelForm):
+    first_name = forms.CharField(label='Nombres', required=True,
+        widget = forms.TextInput(attrs={
+            'class':'form-control', 'placeholder':'Nombres'
+        })
+    )
+    last_name = forms.CharField(label='Apellidos', required=True,
+        widget = forms.TextInput(attrs={
+            'class':'form-control', 'placeholder':'Apellidos'
+        })
+    )
+    avatar = forms.ImageField(label='Imagen de perfil', required=False, widget=forms.FileInput)
+    bio = forms.CharField(label='Descripcion', required=False, widget=forms.Textarea(attrs={
+      'class':'form-control', 'rows':3  
+    }))
 
-
-
+    class Meta:
+        model=Profile
+        fields = ('avatar','first_name','last_name', 'bio')
