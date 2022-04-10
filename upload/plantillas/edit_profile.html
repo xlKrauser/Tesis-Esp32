@@ -1,0 +1,31 @@
+{% extends 'dashboard.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+<div class="cardProfile">
+    <div class="card">
+        <div>
+            <h2 class="mb-3">Editar Perfil</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="id_avatar" class="form-label">Imagen de perfil</label>
+                <div class="imagen-perfil mb-2">
+                    {% if request.user.profile.avatar %}
+                    <img src="{{user.profile.avatar.url}}">
+                    {% else %}
+                    <img src="{% static 'img/User.png' %}">
+                    {% endif %}
+                </div>
+                <input type="file" name="avatar" class="form-control mb-3" accept="image/*" id="id_avatar">
+                {{form.first_name | as_crispy_field}}
+                {{form.last_name | as_crispy_field}}
+                {{form.bio | as_crispy_field}}
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="reset" class="btn btn-danger">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

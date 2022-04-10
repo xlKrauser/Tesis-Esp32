@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}  
+
+<header>
+    {% if messages %}
+        {% for message in messages %}
+        <div id="alert-user" class="alert alert-success alert-dismissible fade show {{message.tags}}" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+</header>
+
+<section>
+    <div id = "container-home" class="container-fluid">
+        <div class="row text-center">
+            <h1>Nuestros Cursos</h1>
+        </div>
+        <div class="row text-center mt-5">
+            <div class="col">
+                <h2 class="mb-3">ESP32</h2>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate officia, laborum voluptas ipsa nostrum.</p>
+                <a class="btn btn-success" role="button" type="submit" href="#">APRENDER MÁS</a>
+            </div>
+            <div class="col">
+                <h2 class="mb-3">Python</h2>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate officia, laborum voluptas ipsa nostrum.</p>
+                <a class="btn btn-success" role="button" type="submit" href="#">APRENDER MÁS</a>
+            </div>
+            <div class="col">
+                <h2 class="mb-3">Idiomas</h2>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate officia, laborum voluptas ipsa nostrum.</p>
+                <a class="btn btn-success" role="button" type="submit" href="#">APRENDER MÁS</a>
+            </div>
+            <div class="col">
+                <h2 class="mb-3">SolidWorks</h2>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate officia, laborum voluptas ipsa nostrum.</p>
+                <a class="btn btn-success" role="button" type="submit" href="#">APRENDER MÁS</a>
+            </div>
+        </div>
+    </div>  
+</section>
+
+<section>
+
+    <div class="container-fluid">
+
+    </div>
+
+</section>
+  
+{% endblock %}
+
