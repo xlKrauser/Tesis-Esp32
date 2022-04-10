@@ -9,7 +9,10 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+<<<<<<< HEAD
 from ntpath import join
+=======
+>>>>>>> 7a7d4047f661f67585a0457b730f6e436647fc62
 import os
 from pathlib import Path
 from re import TEMPLATE

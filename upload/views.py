@@ -1,3 +1,4 @@
+
 from distutils.command.install_data import install_data
 import os
 from django.conf import settings
@@ -92,5 +93,3 @@ def cargar(request):
 
 def contacto(request):
     return render(request, 'contacto.html')
-
-
