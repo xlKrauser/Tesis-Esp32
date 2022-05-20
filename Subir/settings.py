@@ -140,11 +140,15 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'diego980411@gmail.com'
-EMAIL_HOST_PASSWORD = '98041163402'
+EMAIL_HOST_PASSWORD = 'otulxzdfpkcxdzyb'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://programacionplus.duckdns.org'
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
