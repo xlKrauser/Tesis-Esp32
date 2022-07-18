@@ -1,3 +1,5 @@
+from pyexpat import model
+from tabnanny import check
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
@@ -18,19 +20,6 @@ def user_directory_path_profile(instance, filename):
     
     return profile_picture_name
 
-OPCIONES_TARJETA = (
-    ('T1', 'MODULO DOMOTICO'),
-    ('T2', 'MODULO SENSOR TEMPERATURA'),
-    ('T3', 'MODULO IMPRESORA 3D'),
-    ('T4', 'ESP32 - 4'),
-    ('T5', 'ESP32 - 5'),
-    ('T6', 'ESP32 - 6'),
-    ('T7', 'ESP32 - 7'),
-    ('T8', 'ESP32 - 8'),
-    ('T9', 'ESP32 - 9'),
-    ('T10', 'ESP32 -10'),
-    )
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar = models.ImageField(upload_to = user_directory_path_profile, null=True, blank=True)
@@ -49,17 +38,27 @@ def save_user_profile(sender, instance, **kwargs):
 post_save.connect(created_user_profile, sender=User)
 post_save.connect(save_user_profile, sender=User)
 
-
 class Archivo(models.Model):
+    
+    MODULO_DOMOTICO = 'T1'
+    MODULO_SENSOR_TEMPERATURA = "T2"
+    MODULO_MOTOR_ELECTRICO = "T3"
+    MODULO_INCUBADORA = "T4"
+    OPCIONES_TARJETA = (
+        (MODULO_DOMOTICO, 'MODULO DOMOTICO'),
+        (MODULO_SENSOR_TEMPERATURA, 'MODULO SENSOR TEMPERATURA'),
+        (MODULO_MOTOR_ELECTRICO, 'MODULO MOTOR ELECTRICO'),
+        (MODULO_INCUBADORA, 'MODULO INCUBADORA'),
+    )
 
-    tarjeta = models.CharField(max_length=15, choices=OPCIONES_TARJETA, default='ESP32 - 1')
+    tarjeta = models.CharField(max_length=15, choices=OPCIONES_TARJETA)
     archivo = models.FileField(validators=[FileExtensionValidator(allowed_extensions=['bin'])])
     fecha = models.DateTimeField(auto_now=True) 
     usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-        
-
+    estado = models.BooleanField(default=False)
+    
     def __str__(self):
-         return '%s %s %s' % (self.tarjeta, self.archivo, self.fecha)
+         return '%s %s %s %s %s' % (self.tarjeta, self.archivo, self.fecha, self.estado, self.usuario)
 
     def delete(self, *args, **kwargs):
         self.archivo.delete()

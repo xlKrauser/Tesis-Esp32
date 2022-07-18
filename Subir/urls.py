@@ -43,6 +43,7 @@ urlpatterns = [
     path('contacto/', views.contacto, name = 'contacto'),
     path('secretpage/', views.secretpage, name = 'secretpage'),
     path('inicio/', views.inicio, name='inicio'),
+    path('inicio/<tarjeta>', views.cambiarEstado, name='cambiarEstado'),
     path('editar_perfil/', views.profileUpload, name="editar_perfil"),
 ]
 if settings.DEBUG:

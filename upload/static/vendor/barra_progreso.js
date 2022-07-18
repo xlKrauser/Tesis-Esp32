@@ -2,6 +2,12 @@ const uploadForm =  document.getElementById('upload-form')
 const inputFile = document.getElementById('id_archivo')
 console.log(inputFile)
 
+// const tarjeta = document.getElementById('id_tarjeta')
+
+// tarjeta.addEventListener('change', () =>{
+//     console.log(tarjeta.options[tarjeta.selectedIndex].value);
+// })
+
 const alertBox = document.getElementById('alert-box')
 const progressBox = document.getElementById('progress-box')
 const cancelBtn = document.getElementById('cancel-btn')
@@ -60,7 +66,9 @@ $('#upload-form').submit(function(e){
             uploadForm.reset()
             progressBox.classList.add('visually-hidden')
             cancelBtn.classList.add('visually-hidden')
-            
+            setTimeout(() => {
+                window.location.href="http://localhost:8000/inicio/"
+            },2000)
         },
         error: function(err){
             if(media_data.type != 'application/octet-stream'){

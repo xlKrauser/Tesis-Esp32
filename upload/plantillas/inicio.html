@@ -7,38 +7,112 @@
 <div class="cardBox">
     <div class="card">
         <div>
-            <div class="numbers">1,504</div>
-            <div class="cardName">Vistas diarias</div>
+            <div class="numbers">Planta</div>
+            <div class="cardName">Domotica</div>
         </div>
         <div class="iconBox">
-            <ion-icon name="eye-outline"></ion-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+            </svg> 
+            {% for estado in estados %}
+                {% if estado.estado == True and estado.usuario_id == request.user.id and estado.tarjeta == "T1" %}                
+                <label class="switch">
+                    <form method="POST" action="{% url 'cambiarEstado' estado.tarjeta %}" id="estado">
+                        {% csrf_token %}
+                        <input type="checkbox" checked onchange= "document.getElementById('estado').submit()" value="false">
+                        <span class="slider_round"></span>
+                    </form>
+                </label>
+                {% elif estado.estado == True and estado.usuario_id != request.user.id and estado.tarjeta == "T1" %}
+                <label class="switch">
+                    <input type="checkbox" checked disabled>
+                    <span class="slider_round"></span>
+                </label>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
     <div class="card">
         <div>
-            <div class="numbers">80</div>
-            <div class="cardName">Ventas</div>
+            <div class="numbers">Planta</div>
+            <div class="cardName">Temperatura</div>  
         </div>
         <div class="iconBox">
-            <ion-icon name="cart-outline"></ion-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-thermometer-half" viewBox="0 0 16 16">
+                <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z"/>
+                <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z"/>
+            </svg>
+            {% for estado in estados %}
+                {% if estado.estado == True and estado.usuario_id == request.user.id and estado.tarjeta == "T2" %}
+                <label class="switch">
+                    <form method="POST" action="{% url 'cambiarEstado' estado.tarjeta %}" id="estado2">
+                        {% csrf_token %}
+                        <input type="checkbox" checked onchange= "document.getElementById('estado2').submit()" value="false">
+                        <span class="slider_round"></span>
+                    </form>an>
+                </label>
+                {% elif estado.estado == True and estado.usuario_id != request.user.id and estado.tarjeta == "T2" %}
+                <label class="switch">
+                    <input type="checkbox" checked disabled>
+                    <span class="slider_round"></span>
+                </label>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
     <div class="card">
         <div>
-            <div class="numbers">284</div>
-            <div class="cardName">Comentarios</div>
+            <div class="numbers">Planta</div>
+            <div class="cardName">Motor</div>
         </div>
         <div class="iconBox">
-            <ion-icon name="chatbubbles-outline"></ion-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor" class="bi bi-lightning-charge-fill" viewBox="0 0 16 16">
+                <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09z"/>
+            </svg>
+            {% for estado in estados %}       
+                {% if estado.estado == True and estado.usuario_id == request.user.id and estado.tarjeta == "T3" %}
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider_round"></span>
+                </label>
+                {% elif estado.estado == True and estado.usuario_id != request.user.id and estado.tarjeta == "T3" %}
+                <label class="switch">
+                    <form method="POST" action="{% url 'cambiarEstado' estado.tarjeta %}" id="estado3">
+                        {% csrf_token %}
+                        <input type="checkbox" checked onchange= "document.getElementById('estado3').submit()" value="false">
+                        <span class="slider_round"></span>
+                    </form>
+                </label>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
     <div class="card">
         <div>
-            <div class="numbers">$7,842</div>
-            <div class="cardName">Ganancias</div>
+            <div class="numbers">Planta</div>
+            <div class="cardName">Incubadora</div>
         </div>
         <div class="iconBox">
-            <ion-icon name="cash-outline"></ion-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lightbulb" viewBox="0 0 16 16">
+                <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z"/>
+            </svg>
+            {% for estado in estados %}
+                {% if estado.estado == True and estado.usuario_id == request.user.id and estado.tarjeta == "T4" %}
+                <label class="switch">
+                    <form method="POST" action="{% url 'cambiarEstado' estado.tarjeta %}" id="estado4">
+                        {% csrf_token %}
+                        <input type="checkbox" checked onchange= "document.getElementById('estado4').submit()" value="false">
+                        <span class="slider_round"></span>
+                    </form>
+                </label>
+                {% elif estado.estado == True and estado.usuario_id != request.user.id and estado.tarjeta == "T4" %}
+                <label class="switch">
+                    <input type="checkbox" checked disabled>
+                    <span class="slider_round"></span>
+                </label>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 </div>

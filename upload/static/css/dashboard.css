@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
 *
-{
+{   
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -88,7 +88,6 @@ body{
 }
 .navigation ul li a .icon ion-icon{
     font-size: 1.75em;
-
 }
 .navigation ul li a .main-title{
     position: relative;
@@ -253,6 +252,63 @@ body{
 }
 /*Inicio.html*/
 
+/* Boton Checkbox */
+.switch{
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-top: 5px;
+}
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider_round{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f00;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+.slider_round:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+    content:"OFF";
+    font-size: 10px;
+    line-height: 2.5;
+}
+input:checked + .slider_round {
+    background-color: #8de02c;
+}  
+input:focus + .slider_round {
+    box-shadow: 0 0 3px #8de02c;
+}
+input:checked + .slider_round:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+    content:"ON";
+}  
+input:disabled + .slider_round {
+    opacity: 0.6;
+    background-color: #8de02c;
+    pointer-events: none;
+}
 .cardBox{
     position: relative;
     width: 100%;
@@ -264,7 +320,7 @@ body{
 .cardBox .card{
     position: relative;
     background: var(--white);
-    padding: 30px;
+    padding: 20px;
     border-radius: 20px;
     display: flex;
     flex-direction: row;
@@ -272,12 +328,14 @@ body{
     justify-content: space-between;
     cursor: pointer;
     box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+    grid-gap: 5px;
 }
 .cardBox .card .numbers{
     position: relative;
     font-weight: 500;
     font-size: 2.0em;
     color: var(--blue);
+    padding-right: 20px;
 }
 .cardBox .card .cardName{
     color: var(--black2);
@@ -285,8 +343,14 @@ body{
     margin-top: 5px;
 }
 .cardBox .card .iconBox{
-    font-size: 3.0em;
+    display: grid;
+    position: relative;
+    justify-items: center;
+    text-align: center;
     color: var(--black2);
+}
+.cardBox .card .iconBox svg{
+    vertical-align: baseline;
 }
 .cardBox .card:hover{
     background: var(--blue);
@@ -295,6 +359,9 @@ body{
 .cardBox .card:hover .cardName,
 .cardBox .card:hover .iconBox{
     color: var(--white);
+}
+.cardBox .card:hover .switch{
+    color: var(--black1)
 }
 .details{
     position: relative;
@@ -719,4 +786,6 @@ body{
         font-size: 2.4em;
     }
 }
-
+.card{
+    border: none;
+}

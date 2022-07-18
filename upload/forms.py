@@ -1,24 +1,58 @@
 
 from cProfile import label
 from dataclasses import fields
+from email.policy import default
+from multiprocessing.sharedctypes import Value
 from pyexpat import model
+from random import choices
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
-from django.forms import ValidationError
-
-
+from django.forms import ValidationError, Select
 from upload.models import Archivo, Profile
+from django.utils.encoding import force_str
+from django.utils.html import format_html_join
+from django.utils.safestring import mark_safe
 
+
+class MySelect(Select):
+
+    def __init__(self, *args, **kwargs):
+        self._disabled_choices = []
+        super(MySelect, self).__init__(*args, **kwargs)
+
+    @property
+    def disabled_choices(self):
+        return self._disabled_choices
+
+    @disabled_choices.setter
+    def disabled_choices(self, other):
+        self._disabled_choices = other
+
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option_dict = super(MySelect, self).create_option(
+            name, value, label, selected, index, subindex=subindex, attrs=attrs
+        )
+        if value in self.disabled_choices:
+            option_dict['attrs']['disabled'] = 'disabled'
+        return option_dict
 class ArchivoForm(forms.ModelForm):
 
     class Meta:
         model = Archivo        
         fields = ('tarjeta', 'archivo')
-    
+
+    tarjeta = forms.ChoiceField(widget=MySelect,choices=Archivo.OPCIONES_TARJETA)
+
+    def __init__(self, *args, disabled_choices=None, **kwargs):
+        super(ArchivoForm, self).__init__(*args, **kwargs)
+        if disabled_choices:
+            self.fields['tarjeta'].widget.disabled_choices = disabled_choices
+
     def save(self, user):
         obj = super().save(commit=False)
         obj.usuario = user
+        obj.estado = True
         obj.save()
         return obj
 

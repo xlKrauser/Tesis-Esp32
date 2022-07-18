@@ -1,6 +1,7 @@
 
 from distutils.command.install_data import install_data
 import os
+from sre_parse import State
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, HttpResponse
@@ -47,11 +48,22 @@ def profileUpload(request):
 
 @login_required
 def inicio(request):
-    return render (request, 'inicio.html')
+    estados = Archivo.objects.filter(estado=True)
+    return render(request, 'inicio.html', {"estados": estados})
+
+@login_required
+def cambiarEstado(request, tarjeta):
+    if request.method == 'POST':
+        cambioEstado = Archivo.objects.filter(tarjeta = tarjeta).update(estado = False)
+        print(cambioEstado)
+        
+    return redirect('inicio')
+
 
 def secretpage (request):
     archivo = Archivo.objects.values_list('archivo', flat=True).last()
-    return render (request, 'secretpage.html', {'archivo': archivo})
+    tarjeta = Archivo.objects.values_list('tarjeta', flat=True).last()
+    return render (request, 'secretpage.html', {'archivo': archivo, 'tarjeta':tarjeta})
 
 
 def signup(request):
@@ -76,19 +88,20 @@ def archivos(request):
 def borrarArchivos(request, pk):
     if request.method == 'POST':
         archivo = Archivo.objects.get(pk=pk)
+        print(archivo)
         archivo.delete()
     return redirect('archivos')
 
 @login_required
-def cargar(request):
-    
+def cargar(request):  
+    disabled_choices = Archivo.objects.filter(estado=True).values_list('tarjeta', flat=True)
     if request.method == 'POST':
         form = ArchivoForm(request.POST, request.FILES)
         if form.is_valid():  
             form.save(request.user)
             return JsonResponse({'message':'Archivo subido correctamente'})
     else:
-        form = ArchivoForm()
+        form = ArchivoForm(disabled_choices=disabled_choices)
     return render(request, 'cargar.html', {'form':form})
 
 def contacto(request):
