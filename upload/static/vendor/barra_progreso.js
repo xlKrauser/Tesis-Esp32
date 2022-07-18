@@ -67,7 +67,7 @@ $('#upload-form').submit(function(e){
             progressBox.classList.add('visually-hidden')
             cancelBtn.classList.add('visually-hidden')
             setTimeout(() => {
-                window.location.href="http://localhost:8000/inicio/"
+                window.location.href="http://programacionplus.duckdns.org/inicio"
             },2000)
         },
         error: function(err){
