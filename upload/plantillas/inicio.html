@@ -73,16 +73,16 @@
             {% for estado in estados %}       
                 {% if estado.estado == True and estado.usuario_id == request.user.id and estado.tarjeta == "T3" %}
                 <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider_round"></span>
-                </label>
-                {% elif estado.estado == True and estado.usuario_id != request.user.id and estado.tarjeta == "T3" %}
-                <label class="switch">
                     <form method="POST" action="{% url 'cambiarEstado' estado.tarjeta %}" id="estado3">
                         {% csrf_token %}
                         <input type="checkbox" checked onchange= "document.getElementById('estado3').submit()" value="false">
                         <span class="slider_round"></span>
                     </form>
+                </label>
+                {% elif estado.estado == True and estado.usuario_id != request.user.id and estado.tarjeta == "T3" %}
+                <label class="switch">
+                    <input type="checkbox" checked disabled>
+                    <span class="slider_round"></span>
                 </label>
                 {% endif %}
             {% endfor %}
