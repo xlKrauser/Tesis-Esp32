@@ -7,7 +7,17 @@
 
 {% load static %}
 
-{% block content %}
+    {% block content %}
+    <header>
+        {% if messages %}
+            {% for message in messages %}
+            <div id="alert-user" class="alert alert-success alert-dismissible fade show {{message.tags}}" role="alert">
+                {{message}}. Ya puedes inciar sesion
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </header>
     <div id = "login" class="container-fluid">
         <!--Formulario para incio de sesion-->
         <div class="row justify-content-center mb-3">
@@ -33,7 +43,8 @@
                                     <span class="input-group-text bg-transparent">
                                         <img class="userIcon" src="{% static 'img/UserIcon.png' %}" alt="">
                                     </span>
-                                    <input type="text" name="username" placeholder="diego.martinez" autofocus autocapitalize="none" autocomplete="username" maxlength="150" class="textinput textInput form-control" required="" id="id_username"> 
+                                    <input type="text" name="username" placeholder="Nombre de usuario" autofocus autocapitalize="none" autocomplete="username" maxlength="150" class="textinput textInput form-control" required="" id="id_username" onkeyup="minus(this)"> 
+                                    
                                 </div>
                             </div>
                             <div id="div_id_password" class="mb-3"> 
@@ -75,6 +86,12 @@
             </div>
         </div>
     </div>
+    <script>
+        const minus=(e)=>{
+            var username = e.value.toLowerCase();
+        }
+        
+    </script>
 {% endblock %}
 
 {% block footer %}

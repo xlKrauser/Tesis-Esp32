@@ -23,15 +23,24 @@
         <div class="navigation">
             <ul>
                 <li class="brandname">
-                    <a href="{% url 'inicio' %}">
-                        <span class="icon"><img src="{% static 'img/Logo.png' %}"></span>
-                        <span class="main-title">Club de Tecnologia<br>Unillanos</span>
-                    </a>
+                    <div>
+                        <a class="navigation_header">
+                            <span class="icon"><img src="{% static 'img/Logo.png' %}"></span>
+                            <span class="main-title">Club de Tecnologia<br> Unillanos <br><br> IoT Steam</span>   
+                        </a>
+
+                    </div>
                 </li>
                 <li>
                     <a href="{% url 'inicio' %}">
                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                         <span class="title">Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'lectura' %}">
+                        <span class="icon"><ion-icon name="speedometer-outline"></ion-icon></span>
+                        <span class="title">Lectura Sensores</span>
                     </a>
                 </li>
                 <li>
@@ -91,11 +100,16 @@
             </div>
             <!-- userImg -->
             <div class="user">
-                {% if request.user.profile.avatar %}
-                <img src="{{request.user.profile.avatar.url}}">
-                {% else %}
-                <img src="{% static 'img/User.png' %}" alt="">
-                {% endif %}
+                <div class="username">
+                    {{user.first_name}} {{user.last_name}}
+                </div>
+                <div class="userImg">
+                    {% if request.user.profile.avatar %}
+                    <img src="{{request.user.profile.avatar.url}}">
+                    {% else %}
+                    <img src="{% static 'img/User.png' %}" alt="">
+                    {% endif %}
+                </div>
             </div>
         </div>
         {% block content %}

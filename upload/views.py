@@ -20,7 +20,7 @@ from .forms import  ArchivoForm, SignUpForm, ProfileUpdate
 User = get_user_model()
 
 def home(request):
-    return render (request, 'home.html')
+    return render (request)
 
 
 @login_required
@@ -47,9 +47,10 @@ def profileUpload(request):
     
 
 @login_required
-def inicio(request):
+def inicio(request):    
+    users = User.objects.all()
     estados = Archivo.objects.filter(estado=True)
-    return render(request, 'inicio.html', {"estados": estados})
+    return render(request, 'inicio.html', {'estados': estados, 'users':users})
 
 @login_required
 def cambiarEstado(request, tarjeta):
@@ -82,6 +83,7 @@ def signup(request):
 def archivos(request):
     user_log = request.user.id
     archivos = Archivo.objects.filter(usuario = user_log).order_by('-fecha')
+    print(archivos)
     return render(request, 'archivos.html', {'archivos':archivos})
 
 @login_required
@@ -104,5 +106,6 @@ def cargar(request):
         form = ArchivoForm(disabled_choices=disabled_choices)
     return render(request, 'cargar.html', {'form':form})
 
-def contacto(request):
-    return render(request, 'contacto.html')
+@login_required
+def lectura(request):
+    return render(request, 'lectura.html')

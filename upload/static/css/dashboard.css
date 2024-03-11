@@ -59,12 +59,14 @@ body{
     margin-bottom: 40px;
     pointer-events: none;
 }
+
 .navigation ul li a{
     position: relative;
     width: 100%;
     display: flex;
     text-decoration: none;
     color: var(--white);
+    align-items: center;
 }
 .navigation ul li #configuracion{
     color: var(--white);
@@ -93,15 +95,20 @@ body{
     position: relative;
     display: flex;
     padding: 10px 10px;
-    height: 60px;
     text-align: center;
 }
+.navigation ul li a .icon img{
+    object-fit: cover;
+    display: flex;
+    width: 60px;
+    height: 100%;
+} 
 .navigation ul li a .title{
     position: relative;
     display: block;
     padding: 0 10px;
     height: 60px;
-    line-height: 60px;
+    line-height: 55px;
     text-align: start;
     white-space: nowrap;
 }
@@ -111,19 +118,13 @@ body{
     border: 6px solid transparent;
     border-top: 6px solid;
     border-right: 6px solid;
-    margin: 20px 20px 20px 40px;
+    margin: 10px 20px 20px 40px;
     transform: rotate(135deg);
 }
 .arrow-down.rotate{
     transition: 0.5s;
     transform: translateY(50%) rotate(-45deg);
 }
-.navigation ul li a .icon img{
-    object-fit: cover;
-    display: flex;
-    width: 60px;
-    height: 100%;
-} 
 /* curve outside */
 .navigation ul li:hover a::before,
 .navigation ul li.hovered a::before{
@@ -235,6 +236,13 @@ body{
     font-size: 1.2em;
 }
 .user{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px;
+}
+.userImg{
     position: relative;
     width: 40px;
     height: 40px;
@@ -242,7 +250,7 @@ body{
     overflow: hidden;
     cursor: pointer;
 }
-.user img{
+.userImg img{
     position: absolute;
     top: 0;
     left: 0;
@@ -329,6 +337,7 @@ input:disabled + .slider_round {
     cursor: pointer;
     box-shadow: 0 7px 25px rgba(0,0,0,0.08);
     grid-gap: 5px;
+    text-decoration: none;
 }
 .cardBox .card .numbers{
     position: relative;
@@ -508,6 +517,94 @@ input:disabled + .slider_round {
 .recentCustomers table tr:hover td h4 span{
     color: var(--white);
 }
+
+/* Lectura.hmtl */
+  .container {
+    padding-top: 30px;
+  }
+  .gauge-container {
+    text-align: center;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+    position: relative;
+  }
+  .gauge-container:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  .gauge-title {
+    font-size: 18px;
+    margin-top: 15px;
+  }
+  .gauge-container .icon {
+    font-size: 40px;
+    color: #3498db;
+    margin-bottom: 10px;
+  }
+  .corner {
+    font-size: 28px;
+    margin-right: 10px;
+  }
+  .corner i {
+    font-size: 28px;
+    margin-right: 10px;
+  }
+  .device-info {
+    background-color: #f5f5f5;
+    color: black;
+    padding: 20px 0;
+    text-align: center;
+    margin-bottom: 30px;
+    /* border-top: 5px solid #2ecc71; */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .subtitle {
+    font-size: 24px;
+    margin: 0 0 10px;
+    font-weight: bold;
+    color: #333;
+  }
+  .device-name {
+    font-size: 32px;
+    margin: 0;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  .user-icon {
+    font-size: 24px;
+  }
+  .user-name {
+    font-size: 18px;
+    margin: 0;
+  }
+  /* .title {
+    font-size: 24px;
+    margin: 0;
+    margin-left: 50px;
+  } */
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .btn-container a {
+    margin-right: 10px;
+  }
+  @media (max-width: 767px) {
+    .btn-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .btn-container a {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
 
 /*Cargar.html*/
 .cardFile{

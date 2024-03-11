@@ -58,6 +58,8 @@ class ArchivoForm(forms.ModelForm):
 
 class SignUpForm(forms.Form):
     username = forms.CharField(label='Usuario' ,min_length=6, max_length=20)
+    # first_name = forms.CharField(label='Nombres', required=True, max_length=40)
+    # last_name = forms.CharField(label='Apellidos', required=True, max_length=60)
     email = forms.EmailField(label='Correo Electronico', required=True, max_length=40)
     password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput(), min_length=6)
     password2 = forms.CharField(label='Confirme su contraseña', widget=forms.PasswordInput(), min_length=6)
@@ -89,6 +91,8 @@ class SignUpForm(forms.Form):
             self.cleaned_data['username'],
             self.cleaned_data['email'],
             self.cleaned_data['password1'],
+            # first_name = self.cleaned_data['first_name'],
+            # last_name = self.cleaned_data['last_name'],
         )
         return user
 

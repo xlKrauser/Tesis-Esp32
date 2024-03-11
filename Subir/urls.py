@@ -26,9 +26,9 @@ from upload import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name = 'home'),
+    # path('', views.home, name = 'home'),
     path('signup/', views.signup, name = 'signup'),
-    path('login/', auth_views.LoginView.as_view(template_name = 'registration/login.html'), name='login' ),
+    path('', auth_views.LoginView.as_view(template_name = 'registration/login.html'), name='home' ),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('change_password/', auth_views.PasswordChangeView.as_view(
         template_name = 'registration/password_change.html', form_class = MyPasswordChangeForm), name='password_change'),
@@ -38,9 +38,10 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(form_class = MySetPasswordForm), name = 'password_reset_confirm'),
     path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(), name = 'password_reset_complete'),
     path('cargar/', views.cargar, name = 'cargar'),
+    path('lectura/', views.lectura, name = 'lectura'),
     path('archivos/', views.archivos, name = 'archivos'),
     path('archivos/<int:pk>', views.borrarArchivos, name = 'borrarArchivos'),
-    path('contacto/', views.contacto, name = 'contacto'),
+    # path('contacto/', views.contacto, name = 'contacto'),
     path('secretpage/', views.secretpage, name = 'secretpage'),
     path('inicio/', views.inicio, name='inicio'),
     path('inicio/<tarjeta>', views.cambiarEstado, name='cambiarEstado'),

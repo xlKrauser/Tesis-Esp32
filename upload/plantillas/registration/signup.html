@@ -15,7 +15,7 @@
                     <form method="post">
                         {% csrf_token %}
                         {{register_form|crispy}}
-                        <a href="{% url 'home' %}">
+                        <a href="{% url 'inicio' %}">
                             <button type="submit" class="btn btn-primary">Registrarse</button>
                         </a>
                     </form>
@@ -30,7 +30,7 @@
             <div id = "cardsignup" class="card" style="border-radius: 15px;">
                 <div class="card-body">
                     <p align = "center">¿Ya tienes una cuenta?
-                        <a href="{% url 'login' %}">Inicia sesion aquí</a>
+                        <a href="{% url 'home' %}">Inicia sesion aquí</a>
                     </p>
                 </div>
             </div>
