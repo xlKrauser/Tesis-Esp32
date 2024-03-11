@@ -20,6 +20,7 @@ from .forms import  ArchivoForm, SignUpForm, ProfileUpdate
 User = get_user_model()
 
 def home(request):
+    print("Hola mundo")
     return render (request)
 
 

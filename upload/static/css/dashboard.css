@@ -422,10 +422,10 @@ input:disabled + .slider_round {
 .details .recentOrders table tr:last-child{
     border-bottom: none;
 }
-.details .recentOrders table tbody tr:hover{
+/* .details .recentOrders table tbody tr:hover{
     background: var(--blue);
     color: var(--white);
-}
+} */
 .details .recentOrders table tr td{
     padding: 10px;
 }
@@ -494,10 +494,10 @@ input:disabled + .slider_round {
     height: 100%;
     object-fit: cover;
 }
-.recentCustomers table tr:hover{
+/* .recentCustomers table tr:hover{
     background: var(--blue);
     color: var(--white);
-}
+} */
 .recentCustomers table tr td{
     padding: 12px 10px;
 }
@@ -510,13 +510,13 @@ input:disabled + .slider_round {
     font-size: 14px;
     color: var(--black2);
 }
-.recentCustomers table tr:hover{
+/* .recentCustomers table tr:hover{
     background: var(--blue);
     color: var(--white);
 }
 .recentCustomers table tr:hover td h4 span{
     color: var(--white);
-}
+} */
 
 /* Lectura.hmtl */
   .container {

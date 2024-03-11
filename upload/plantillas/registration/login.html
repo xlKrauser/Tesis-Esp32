@@ -30,7 +30,8 @@
                             {% if form.errors %}
                             <div class="alert alert-block alert-danger"> 
                                 <ul class="m-0"> 
-                                    <li>Error: Por favor ingrese un nombre de usuario y contraseña correctos.</li> 
+                                    <!-- <li>Error: Por favor ingrese un nombre de usuario y contraseña correctos.</li>  -->
+                                    <li>{{error_message}}</li> 
                                 </ul> 
                             </div>
                             {% endif %}
@@ -43,7 +44,7 @@
                                     <span class="input-group-text bg-transparent">
                                         <img class="userIcon" src="{% static 'img/UserIcon.png' %}" alt="">
                                     </span>
-                                    <input type="text" name="username" placeholder="Nombre de usuario" autofocus autocapitalize="none" autocomplete="username" maxlength="150" class="textinput textInput form-control" required="" id="id_username" onkeyup="minus(this)"> 
+                                    <input type="text" name="username" placeholder="Nombre de usuario" autofocus autocapitalize="none" autocomplete="username" maxlength="150" class="textinput textInput form-control" required="" id="id_username"> 
                                     
                                 </div>
                             </div>
@@ -86,12 +87,6 @@
             </div>
         </div>
     </div>
-    <script>
-        const minus=(e)=>{
-            var username = e.value.toLowerCase();
-        }
-        
-    </script>
 {% endblock %}
 
 {% block footer %}
