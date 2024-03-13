@@ -384,11 +384,12 @@ input:disabled + .slider_round {
 .details .recentOrders{
     position: relative;
     display: grid;
-    min-height: 400px;
+    max-height: 500px;
     background: var(--white);
     padding: 20px;
     box-shadow: 0 7px 25px rgba(0,0,0,0.08);
     border-radius: 20px;
+    overflow-y: auto;
 }
 .cardHeader{
     display: flex;
@@ -473,11 +474,12 @@ input:disabled + .slider_round {
 .recentCustomers{
     position: relative;
     display: grid;
-    min-height: 500px;
+    max-height: 500px;
     padding: 20px;
     background: var(--white);
     box-shadow: 0 7px 25px rgba(0,0,0,0.08);
     border-radius: 20px;
+    overflow-y: auto;
 }
 .recentCustomers .imgBx{
     position: relative;
