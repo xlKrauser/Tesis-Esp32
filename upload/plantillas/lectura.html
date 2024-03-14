@@ -3,51 +3,47 @@
 {% load static %}
 
 {% block content %}
+  
 
-<div class="device-info">
-  <div class="subtitle">Parametros Ambientales</div>
-  <div class="device-name" id="device-name"></div>
+<div class="header">
+  <div class="title-lectura">Parametros ambientales</div>
 </div>
-
-<div class="container mt-5">
+<div class="container">
   <div class="row">
-    <div class="col-md-3">
-      <div class="gauge-container">
-        <div class="icon"><ion-icon name="rainy-outline"></ion-icon></div>
-        <h3 class="gauge-title">Humedad</h3>
-        <div id="gauge1"></div>
+    <div class="col-lg-3">
+      <div class="chart-container">
+        <h2 class="chart-title">Humedad</h2>
+        <canvas id="myChart1" data-min="0" data-max="100" data-unit="%"></canvas>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="gauge-container">
-        <div class="icon"><ion-icon name="thermometer-outline"></ion-icon></div>
-        <h3 class="gauge-title">Temperatura</h3>
-        <div id="gauge2"></div>
+    <div class="col-lg-3">
+      <div class="chart-container">
+        <h2 class="chart-title">Temperatura</h2>
+        <canvas id="myChart2" data-min="0" data-max="100" data-unit="°C"></canvas>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="gauge-container">
-        <div class="icon"><ion-icon name="water-outline"></ion-icon></div>
-        <h3 class="gauge-title">Humedad de Suelo</h3>
-        <div id="gauge3"></div>
+    <div class="col-lg-3">
+      <div class="chart-container">
+        <h2 class="chart-title">Humedad de Suelo</h2>
+        <canvas id="myChart3" data-min="0" data-max="100" data-unit="%"></canvas>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="gauge-container">
-        <div class="icon"><ion-icon name="speedometer-outline"></ion-icon></div>
-        <h3 class="gauge-title">Presión Barométrica</h3>
-        <div id="gauge4"></div>
+    <div class="col-lg-3">
+      <div class="chart-container">
+        <h2 class="chart-title">Presión Barométrica</h2>
+        <canvas id="myChart4" data-min="900" data-max="1100" data-unit="hPa"></canvas>
       </div>
     </div>
   </div>
 </div>
 
-
 <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.2/justgage.min.js"></script>
+
 <script>
-  const firebaseConfig = {
+
+const firebaseConfig = {
     apiKey: "AIzaSyAYsgKrSydjNcloTFTgMP0mnG1dyRjq4ag",
           authDomain: "test-agro-4.firebaseapp.com",
           databaseURL: "https://test-agro-4-default-rtdb.firebaseio.com/",
@@ -56,116 +52,228 @@
           messagingSenderId: "1062082669326"
   };
 
-  // Inicializar Firebase
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
+  // Obtener la referencia a los datos de Firebase
+  const database = firebase.database();
+
+  // Función para obtener los datos de Firebase y actualizar los gráficos
+function updateCharts() {
+const deviceSerial = "AG4-FB-003"; // Serial del dispositivo en Firebase
+const userRef = database.ref("device/" + deviceSerial);
+
+userRef.once('value', function(snapshot) {
+  const userData = snapshot.val();
   
-  // Obtener el ID de usuario de la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  ///const userId = urlParams.get("userId");  
-  const userId="VaMHUuehMNYdmCUX5640xq70sLv2";
-  // Obtener el nombre de usuario desde Firebase y mostrarlo en la esquina superior derecha
-  //const userNameElement = document.getElementById("user-name");
-  const userNameElement = "Jhon Rodriguez";
-  const userRef = firebase.database().ref("users/" + userId + "/name");
+  // Obtener los valores de p1, p2, p3, p4
+  const p1Value = userData.p1;
+  const p2Value = userData.p2;
+  const p3Value = userData.p3;
+  const p4Value = userData.p4;
 
-  userRef.once("value").then((snapshot) => {
-    const userName = snapshot.val();
-    userNameElement.textContent = userName;
-  });
+  // Actualizar los datos de los gráficos con los valores de Firebase
+  window.upDownCharts.forEach((chart, index) => {
+    // Identificar el índice del gráfico para asignar el valor correspondiente
+    let newValue;
 
-  // Obtener el nombre del dispositivo desde la URL y mostrarlo
-  const deviceName = urlParams.get("deviceName");
-  const deviceNameElement = document.getElementById("device-name");
-  deviceNameElement.textContent = deviceName;
-
- // const deviceSerial = urlParams.get("deviceSerial");
- const deviceSerial="AG4-FB-003";
-
-  // Definir arreglo de gráficas (gauges) y crear las instancias
-  const gauges = [
-{ id: 'gauge1', field: 'p1', min: 0, max: 100, label: '%', symbol: '%' ,decimal : 1},
-{ id: 'gauge2', field: 'p2', min: 0, max: 100, label: '°C', symbol: '°C' },
-{ id: 'gauge3', field: 'p3', min: 0, max: 100, label: '%', symbol: '%' },
-{ id: 'gauge4', field: 'p4', min: 900, max: 1100, label: 'hPa', symbol: 'hPa'}
-
-];
-
-gauges.forEach(gauge => {
-const gaugeElement = document.getElementById(gauge.id);
-
-const deviceRef = firebase.database().ref("device/" + deviceSerial + "/" + gauge.field);
-
-deviceRef.transaction((currentValue) => {
-  // If the value doesn't exist or is null, set it to 0
-  if (currentValue === null) {
-    return 0;
-  }
-  // Otherwise, leave the value unchanged
-  return currentValue;
-}, (error, committed, snapshot) => {
-  if (error) {
-    console.error("Transaction failed abnormally!", error);
-  } else {
-    const gaugeValue = snapshot.val();
-    gaugeElement.innerHTML = ''; // Clear any default content
-    new JustGage({
-      id: gauge.id,
-      value: gaugeValue,
-      min: gauge.min,
-      max: gauge.max,
-      title: gauge.label,
-      label: gauge.symbol,
-      decimal: gauge.decimal
-    });
-  }
-});
-});
-
-function updateGauges() {
-gauges.forEach(gauge => {
-  const gaugeElement = document.getElementById(gauge.id);
-  const deviceRef = firebase.database().ref("device/" + deviceSerial + "/" + gauge.field);
-
-  deviceRef.once("value").then(snapshot => {
-    const gaugeValue = snapshot.val() || 0;
-
-    // Eliminar la gráfica actual
-    if (gaugeElement.firstChild) {
-      gaugeElement.removeChild(gaugeElement.firstChild);
+    // Asignar el valor correspondiente al índice del gráfico
+    switch(index) {
+      case 0:
+        newValue = p1Value;
+        break;
+      case 1:
+        newValue = p2Value;
+        break;
+      case 2:
+        newValue = p3Value;
+        break;
+      case 3:
+        newValue = p4Value;
+        break;
+      default:
+        newValue = 0; // Valor predeterminado en caso de que no se encuentre un índice válido
     }
 
-    // Crear una nueva instancia de la gráfica
-    const newGauge = new JustGage({
-      id: gauge.id,
-      value: gaugeValue,
-      min: gauge.min,
-      max: gauge.max,
-      title: gauge.label,
-      label: gauge.symbol,
-      decimal: gauge.decimal,
-      relativeGaugeSize: true,
-      levelColors: ["#FF0000", "#FFFF00", "#00FF00"],
-      startAnimationTime: 1, // Configuración para evitar la animación de inicio
-      refreshAnimationTime: 1, // Configuración para evitar la animación de actualización
-    });
+    // Actualizar el valor numérico en el gráfico
+    chart.data.values = [newValue];
 
-    // Agregar la nueva gráfica al contenedor
-    gaugeElement.appendChild(newGauge.canvas);
+    // Actualizar los datos del gráfico
+    chart.data.datasets[0].data = [newValue, 100 - newValue];
+    chart.update();
   });
 });
 }
+ Chart.defaults.doughnutLabels = Chart.helpers.clone(Chart.defaults.doughnut);
 
-  // Actualizar los valores cada 5 segundos
-  setInterval(updateGauges, 1000);
-  // Función para ir a la página de dispositivos con el ID en la URL
-  function goToDevicePage() {
-    window.location.href = "dispositivos.html?userId=" + userId;
+var helpers = Chart.helpers;
+var defaults = Chart.defaults;
+
+Chart.controllers.doughnutLabels = Chart.controllers.doughnut.extend({
+updateElement: function(arc, index, reset) {
+  var _this = this;
+  var chart = _this.chart,
+    chartArea = chart.chartArea,
+    opts = chart.options,
+    animationOpts = opts.animation,
+    arcOpts = opts.elements.arc,
+    centerX = (chartArea.left + chartArea.right) / 2,
+    centerY = (chartArea.top + chartArea.bottom) / 2,
+    startAngle = opts.rotation, 
+    endAngle = opts.rotation, 
+    dataset = _this.getDataset(),
+    circumference = reset && animationOpts.animateRotate ? 0 : arc.hidden ? 0 : _this.calculateCircumference(dataset.data[index]) * (opts.circumference / (2.0 * Math.PI)),
+    innerRadius = reset && animationOpts.animateScale ? 0 : _this.innerRadius,
+    outerRadius = reset && animationOpts.animateScale ? 0 : _this.outerRadius,
+    custom = arc.custom || {},
+    valueAtIndexOrDefault = helpers.getValueAtIndexOrDefault;
+
+  helpers.extend(arc, {
+    _datasetIndex: _this.index,
+    _index: index,
+
+    _model: {
+      x: centerX + chart.offsetX,
+      y: centerY + chart.offsetY,
+      startAngle: 0,
+      endAngle: 2 * Math.PI,
+      circumference: circumference,
+      outerRadius: outerRadius,
+      innerRadius: innerRadius,
+      label: valueAtIndexOrDefault(dataset.label, index, chart.data.labels[index])
+    },
+
+    draw: function() {
+      var ctx = this._chart.ctx,
+        vm = this._view,
+        sA = vm.startAngle,
+        eA = vm.endAngle,
+        opts = this._chart.config.options;
+
+      ctx.beginPath();
+
+      // Dibuja el círculo blanco en el centro
+      ctx.arc(vm.x, vm.y, (vm.innerRadius + vm.outerRadius) / 2, 0, 2*Math.PI);
+
+      ctx.closePath();
+      ctx.fillStyle = '#fff'; // Color blanco
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(vm.x, vm.y, vm.outerRadius, sA, eA);
+      ctx.arc(vm.x, vm.y, vm.innerRadius, eA, sA, true);
+
+      ctx.closePath();
+      ctx.strokeStyle = vm.borderColor;
+      ctx.lineWidth = vm.borderWidth;
+
+      ctx.fillStyle = vm.backgroundColor;
+
+      ctx.fill();
+      ctx.lineJoin = 'bevel';
+
+ ctx.beginPath();
+
+      // Dibuja el círculo blanco en el centro
+      ctx.arc(vm.x, vm.y, (vm.innerRadius + vm.outerRadius) / 2, 0, 2*Math.PI);
+
+      ctx.closePath();
+      ctx.fillStyle = '#fff'; // Color blanco
+      ctx.fill();
+
+      if (vm.borderWidth) {
+        ctx.stroke();
+      }
+ctx.font = " 16px Arial";
+ctx.fillStyle = "#888"; // Cambia el color a gris para las unidades
+ctx.fillText(chart.canvas.getAttribute('data-unit'), vm.x, vm.y + 60); // Unidades
+
+      var total = dataset.data.reduce((sum, val) => sum + val, 0);
+      ctx.fillStyle = "#000"; // Color del texto negro
+      ctx.font = helpers.fontString(60, opts.defaultFontStyle, opts.defaultFontFamily);
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      ctx.fillText(chart.data.values[0] , vm.x, vm.y); // Valor numérico actualizado
+      ctx.font = helpers.fontString(opts.defaultFontSize, opts.defaultFontStyle, opts.defaultFontFamily);
+     // ctx.fillText(chart.canvas.getAttribute('data-min'), vm.x - vm.outerRadius / 1.25, vm.y+15);
+     // ctx.fillText(chart.canvas.getAttribute('data-max'), vm.x + vm.outerRadius / 1.25 , vm.y+15);
+    }
+  });
+
+  var model = arc._model;
+  model.backgroundColor = custom.backgroundColor ? custom.backgroundColor : valueAtIndexOrDefault(dataset.backgroundColor, index, arcOpts.backgroundColor);
+  model.hoverBackgroundColor = custom.hoverBackgroundColor ? custom.hoverBackgroundColor : valueAtIndexOrDefault(dataset.hoverBackgroundColor, index, arcOpts.hoverBackgroundColor);
+  model.borderWidth = custom.borderWidth ? custom.borderWidth : valueAtIndexOrDefault(dataset.borderWidth, index, arcOpts.borderWidth);
+  model.borderColor = custom.borderColor ? custom.borderColor : valueAtIndexOrDefault(dataset.borderColor, index, arcOpts.borderColor);
+
+  if (!reset || !animationOpts.animateRotate) {
+    if (index === 0) {
+      model.startAngle = opts.rotation;
+    } else {
+      model.startAngle = _this.getMeta().data[index - 1]._model.endAngle;
+    }
+
+    model.endAngle = model.startAngle + model.circumference;
   }
 
-  // Función para cerrar sesión y redirigir al inicio de sesión
-  function logout() {
-    window.location.href = "index.html";
+  arc.pivot();
+}
+});
+
+var chartConfigs = [];
+var ctxs = [];
+
+var backgroundColors = ["#228B22", "#FF0000", "#0000FF", "#FFA500", "#800080", "#FFFF00", "#00FFFF", "#FF00FF"];
+
+for (var i = 1; i <= 4; i++) {
+var canvasId = "myChart" + i;
+var canvasElement = document.getElementById(canvasId);
+var minValue = canvasElement.getAttribute('data-min');
+var maxValue = canvasElement.getAttribute('data-max');
+chartConfigs.push({
+  type: 'doughnutLabels',
+  data: {
+    datasets: [{
+      data: [50, 50],
+      backgroundColor: [backgroundColors[i - 1], "#E0E0E0"],
+     
+     
+    }],
+    labels: ["Valor Aleatorio", "Complemento"],
+    values: [50]
+  },
+  options: {
+    circumference: 2*Math.PI,
+    rotation: 1 * Math.PI,
+    responsive: true,
+    legend: { display: false },
+    title: { display: false, text: 'Media Dona con Valor Dinámico' },
+    animation: { animateScale: true, animateRotate: true },
+    tooltips: { enabled: false },
+    plugins: {
+      beforeDraw: function(chart) {
+        var ctx = chart.chart.ctx;
+        var fontSize = 12;
+        var fontStyle = 'normal';
+        var fontFamily = 'Helvetica Neue';
+        ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        var xCenter = (chart.chartArea.left + chart.chartArea.right) / 2;
+        var yCenter = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+        ctx.fillText(minValue, xCenter - (chart.chartArea.right - chart.chartArea.left) / 2 - 10, yCenter);
+        ctx.fillText(maxValue, xCenter + (chart.chartArea.right - chart.chartArea.left) / 2 + 10, yCenter);
+      }
+    }
   }
+});
+
+ctxs.push(canvasElement.getContext("2d"));
+}
+
+window.upDownCharts = chartConfigs.map((config, index) => new Chart(ctxs[index], config));
+ 
+setInterval(updateCharts, 5000); // Actualizar cada 5 segundos
+
 </script>
 
 {% endblock %}

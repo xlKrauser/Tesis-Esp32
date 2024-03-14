@@ -521,93 +521,43 @@ input:disabled + .slider_round {
 } */
 
 /* Lectura.hmtl */
-  .container {
-    padding-top: 30px;
-  }
-  .gauge-container {
-    text-align: center;
-    margin: 10px;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s;
-    position: relative;
-  }
-  .gauge-container:hover {
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  .gauge-title {
-    font-size: 18px;
-    margin-top: 15px;
-  }
-  .gauge-container .icon {
-    font-size: 40px;
-    color: #3498db;
-    margin-bottom: 10px;
-  }
-  .corner {
-    font-size: 28px;
-    margin-right: 10px;
-  }
-  .corner i {
-    font-size: 28px;
-    margin-right: 10px;
-  }
-  .device-info {
-    background-color: #f5f5f5;
-    color: black;
-    padding: 20px 0;
-    text-align: center;
-    margin-bottom: 30px;
-    /* border-top: 5px solid #2ecc71; */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  .subtitle {
-    font-size: 24px;
-    margin: 0 0 10px;
-    font-weight: bold;
-    color: #333;
-  }
-  .device-name {
-    font-size: 32px;
-    margin: 0;
-  }
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  .user-icon {
-    font-size: 24px;
-  }
-  .user-name {
-    font-size: 18px;
-    margin: 0;
-  }
-  /* .title {
-    font-size: 24px;
-    margin: 0;
-    margin-left: 50px;
-  } */
-  .btn-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  .btn-container a {
-    margin-right: 10px;
-  }
-  @media (max-width: 767px) {
-    .btn-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .btn-container a {
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  }
 
+.header{
+    background-color: #007bff; /* Azul */
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title-lectura {
+    font-size: 24px;
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.chart-container {
+    background-color: #fff; /* Fondo blanco */
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 2px solid #007bff; /* Borde azul */
+    position: relative; /* Posición relativa para contener el círculo */
+}
+
+.chart-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #007bff; /* Color azul */
+}
 /*Cargar.html*/
 .cardFile{
     position: relative;
